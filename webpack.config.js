@@ -32,6 +32,9 @@ module.exports = {
     port: devServer.port,
     hot: true,
     headers: { 'Access-Control-Allow-Origin': '*' },
+    historyApiFallback: {
+      index: '/',
+    },
   },
   module: {
     rules: [
@@ -48,7 +51,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
     new HtmlWebpackPlugin({
-      template: resolve(__dirname, 'src/index.html'),
+      template: resolve(__dirname, 'public/index.html'),
       favicon: resolve(__dirname, 'public/react.ico'),
     }),
     new FriendlyErrorsWebpackPlugin(),

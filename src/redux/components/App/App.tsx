@@ -1,12 +1,22 @@
 import React, { FC } from 'react'
+import { Route, Switch } from 'react-router-dom'
 import { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
+
+import { routes } from '../../../routes'
+
+const { root, users } = routes
 
 export const App: FC<{}> = () => {
   return (
     <>
       <GlobalStyle />
-      <div>hoge</div>
+
+      <Switch>
+        <Route exact path={root.path} component={root.component} />
+        <Route exact path={users.path} component={users.component} />
+        <Route path="*" render={() => <p>404</p>} />
+      </Switch>
     </>
   )
 }

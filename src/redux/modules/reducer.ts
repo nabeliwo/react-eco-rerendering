@@ -2,16 +2,16 @@ import { History } from 'history'
 import { combineReducers } from 'redux'
 
 import { RouterState, createRouterReducer } from './router'
-// import { HogeState, hogeReducer } from './hoge'
+import { UserState, userReducer } from './user'
 
 export type State = {
   router: RouterState
-  // hoge: HogeState
+  user: UserState
 }
 
 export const createRootReducer = (history: History) => {
   return combineReducers({
     router: createRouterReducer(history),
-    // hoge: hogeReducer,
+    user: userReducer,
   })
 }
