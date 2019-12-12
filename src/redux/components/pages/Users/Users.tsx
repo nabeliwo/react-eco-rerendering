@@ -1,64 +1,56 @@
 import React, { FC } from 'react'
+import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
 
-import { User } from '../../../modules/user'
+import { routes } from '../../../../routes'
 
-import { Header } from '../../parts/Header'
-import { UserList } from '../../parts/UserList'
+import { Select } from '../../../containers/SelectContainer'
+import { UserList } from '../../../containers/UserListContainer'
 
 type Props = {
-  users: User[]
-  order: string
-  onChangeOrder: (value: string) => void
+  hasUsers: boolean
 }
 
-export const Users: FC<Props> = ({ users, order, onChangeOrder }) => {
+export const Users: FC<Props> = ({ hasUsers }) => {
+  const { user, editUser } = routes.root.children
+
+  console.log('render Users')
+
   return (
-    <>
-      <Header />
+    <Main>
+      <Sidebar>
+        {hasUsers ? (
+          <>
+            <SelectWrapper>
+              <Select />
+            </SelectWrapper>
 
-      <Wrapper>
-        <Main>
-          <Sidebar>
-            {users.length > 0 ? (
-              <>
-                <Select value={order} onChange={e => onChangeOrder(e.currentTarget.value)}>
-                  <option value="name_asc">名前 昇順</option>
-                  <option value="name_desc">名前 降順</option>
-                  <option value="age_asc">年齢 昇順</option>
-                  <option value="age_desc">年齢 降順</option>
-                </Select>
+            <UserList />
+          </>
+        ) : (
+          <Fetching>取得中</Fetching>
+        )}
+      </Sidebar>
 
-                <UserList users={users} curerntUserId="" />
-              </>
-            ) : (
-              <Fetching>取得中</Fetching>
-            )}
-          </Sidebar>
-
-          <Body>
-            <EmptyState>ユーザーを選択してください</EmptyState>
-          </Body>
-        </Main>
-      </Wrapper>
-    </>
+      <Body>
+        <Switch>
+          <Route exact path={user.path} component={user.component} />
+          <Route exact path={editUser.path} component={editUser.component} />
+          <Route path="*" render={() => <EmptyState>ユーザーを選択してください</EmptyState>} />
+        </Switch>
+      </Body>
+    </Main>
   )
 }
 
-const Wrapper = styled.header`
-  width: 1000px;
-  margin: 0 auto;
-  padding: 40px 20px;
-`
 const Main = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-start;
 `
 const Sidebar = styled.div`
   width: 200px;
 `
-const Select = styled.select`
-  width: 100%;
+const SelectWrapper = styled.div`
   margin-bottom: 20px;
 `
 const Fetching = styled.p`
@@ -69,6 +61,7 @@ const Body = styled.div`
   padding-left: 40px;
 `
 const EmptyState = styled.p`
+  height: 547px;
   font-size: 18px;
   text-align: center;
 `

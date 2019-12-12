@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useCallback } from 'react'
+import React, { FC, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { match as Match } from 'react-router'
 
 import { State } from '../modules/reducer'
-import { fetchUsers, fetchUser, changeOrder } from '../modules/user'
+import { fetchUser } from '../modules/user'
 
 import { User as UserComponent } from '../components/pages/User'
 
@@ -15,28 +15,17 @@ export const User: FC<Props> = ({ match }) => {
   const dispatch = useDispatch()
   const { userId } = match.params
 
-  const { users, user, order } = useSelector((state: State) => ({
-    users: state.user.list.items,
-    order: state.user.list.order,
-    user: state.user.current,
+  const { currentUserId } = useSelector((state: State) => ({
+    currentUserId: state.user.current ? state.user.current.id : '',
   }))
 
-  const handleChangeOrder = useCallback(
-    (value: string) => {
-      dispatch(changeOrder(value))
-    },
-    [dispatch],
-  )
-
   useEffect(() => {
-    dispatch(fetchUsers())
-
-    if (user) {
-      if (user.id !== userId) dispatch(fetchUser(userId))
+    if (currentUserId) {
+      if (currentUserId !== userId) dispatch(fetchUser(userId))
     } else {
       dispatch(fetchUser(userId))
     }
-  }, [dispatch, user, userId])
+  }, [currentUserId, dispatch, userId])
 
-  return <UserComponent users={users} order={order} currentUser={user} onChangeOrder={handleChangeOrder} />
+  return <UserComponent userId={currentUserId} />
 }

@@ -19,13 +19,8 @@ const route = (routePath: Route['path'], component: Route['component'], children
 })
 
 export const routes = {
-  root: route(path.root(), Users),
-  users: route(path.users(), Users),
-  user: route(path.user(':userId'), User),
-  editUser: route(path.editUser(':userId'), EditUser),
-  // nested: route(path.nested(), Nested, {
-  //   alpha: route(path.nestedAlpha(), NestedAlpha),
-  //   bravo: route(path.nestedBravo(), NestedBravo),
-  //   charlie: route(path.nestedCharlie(), NestedCharlie),
-  // }),
+  root: route(path.root(), Users, {
+    user: route(path.user(':userId'), User),
+    editUser: route(path.editUser(':userId'), EditUser),
+  }),
 }

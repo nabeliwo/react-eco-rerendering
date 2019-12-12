@@ -3,10 +3,10 @@ import { useSelector, useDispatch } from 'react-redux'
 import { match as Match } from 'react-router'
 
 import { State } from '../modules/reducer'
-import { fetchUsers, fetchUser, changeOrder } from '../modules/user'
+import { fetchUser } from '../modules/user'
+import { setUserForm, EditUserForm, submitEditUserForm } from '../modules/editUserForm'
 
 import { EditUser as EditUserComponent } from '../components/pages/EditUser'
-import { setUserForm, updateText, toggleAttribute, EditUserForm, submitEditUserForm } from '../modules/editUserForm'
 
 type Props = {
   match: Match<{ userId: string }>
@@ -16,31 +16,11 @@ export const EditUser: FC<Props> = ({ match }) => {
   const dispatch = useDispatch()
   const { userId } = match.params
 
-  const { users, order, user, editUserForm } = useSelector((state: State) => ({
-    users: state.user.list.items,
-    order: state.user.list.order,
-    user: state.user.current,
+  const { currentUser, editUserForm } = useSelector((state: State) => ({
+    currentUser: state.user.current,
     editUserForm: state.editUserForm,
   }))
 
-  const handleChangeOrder = useCallback(
-    (value: string) => {
-      dispatch(changeOrder(value))
-    },
-    [dispatch],
-  )
-  const handleUpdateText = useCallback(
-    (key: 'name' | 'nameYomi' | 'age', value: string) => {
-      dispatch(updateText(key, value))
-    },
-    [dispatch],
-  )
-  const handleToggleAttribute = useCallback(
-    (id: string, checked: boolean) => {
-      dispatch(toggleAttribute(id, checked))
-    },
-    [dispatch],
-  )
   const handleSubmit = useCallback(
     (userForm: EditUserForm) => {
       dispatch(submitEditUserForm(userId, userForm))
@@ -49,21 +29,9 @@ export const EditUser: FC<Props> = ({ match }) => {
   )
 
   useEffect(() => {
-    dispatch(fetchUsers())
     if (userId) dispatch(fetchUser(userId))
-    if (user) dispatch(setUserForm(user))
-  }, [dispatch, user, userId])
+    if (currentUser) dispatch(setUserForm(currentUser))
+  }, [dispatch, currentUser, userId])
 
-  return (
-    <EditUserComponent
-      users={users}
-      order={order}
-      currentUser={user}
-      editUserForm={editUserForm}
-      onChangeOrder={handleChangeOrder}
-      onChangeText={handleUpdateText}
-      onToggleAttribute={handleToggleAttribute}
-      onSubmit={handleSubmit}
-    />
-  )
+  return <EditUserComponent hasUser={!!currentUser} editUserForm={editUserForm} onSubmit={handleSubmit} />
 }

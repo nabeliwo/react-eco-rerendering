@@ -1,24 +1,21 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
-import { path } from '../../../../constants/application'
 import { User } from '../../../modules/user'
+
+import { UserListItem } from '../../../containers/UserListItemContainer'
 
 type Props = {
   users: User[]
-  curerntUserId: string
 }
 
-export const UserList: FC<Props> = ({ users, curerntUserId }) => {
+export const UserList: FC<Props> = ({ users }) => {
   return (
     <Wrapper>
+      {console.log('render UserList')}
       {users.map(user => (
         <li key={user.id}>
-          <UserLink to={path.user(user.id)} className={user.id === curerntUserId ? 'active' : ''}>
-            <Avatar src={user.avatar} width="30" height="30" alt={user.name} />
-            <Name>{user.name}</Name>
-          </UserLink>
+          <UserListItem user={user} />
         </li>
       ))}
     </Wrapper>
@@ -31,22 +28,4 @@ const Wrapper = styled.ul`
   > li:not(:first-child) {
     border-top: 1px solid #e5f0ff;
   }
-`
-const UserLink = styled(Link)`
-  display: flex;
-  align-items: center;
-  padding: 10px;
-
-  &.active,
-  &:hover {
-    background-color: #2e91d8;
-    color: #fff;
-  }
-`
-const Avatar = styled.img`
-  margin-right: 10px;
-  background-color: #fff;
-`
-const Name = styled.p`
-  font-size: 16px;
 `

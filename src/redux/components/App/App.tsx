@@ -1,24 +1,27 @@
 import React, { FC } from 'react'
 import { Route, Switch } from 'react-router-dom'
-import { createGlobalStyle } from 'styled-components'
+import styled, { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
 import { routes } from '../../../routes'
 
-const { root, users, user, editUser } = routes
+import { Header } from '../parts/Header'
 
 export const App: FC<{}> = () => {
+  const { root } = routes
+
   return (
     <>
       <GlobalStyle />
 
-      <Switch>
-        <Route exact path={root.path} component={root.component} />
-        <Route exact path={users.path} component={users.component} />
-        <Route exact path={user.path} component={user.component} />
-        <Route exact path={editUser.path} component={editUser.component} />
-        <Route path="*" render={() => <p>404</p>} />
-      </Switch>
+      <Header />
+
+      <Wrapper>
+        <Switch>
+          <Route path={root.path} component={root.component} />
+          <Route path="*" render={() => <p>404</p>} />
+        </Switch>
+      </Wrapper>
     </>
   )
 }
@@ -50,4 +53,9 @@ const GlobalStyle = createGlobalStyle`
     background-color: inherit;
     color: inherit;
   }
+`
+const Wrapper = styled.header`
+  width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
 `

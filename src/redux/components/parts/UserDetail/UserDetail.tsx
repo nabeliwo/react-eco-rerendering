@@ -4,10 +4,12 @@ import styled from 'styled-components'
 import { User } from '../../../modules/user'
 
 type Props = {
-  user: User
+  user: User | null
 }
 
 export const UserDetail: FC<Props> = ({ user }) => {
+  if (!user) return null
+
   return (
     <>
       <Avatar>
