@@ -1,29 +1,25 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-
-import { path } from '../../../../constants/application'
 
 import { UserDetail } from '../../../containers/UserDetailContainer'
 
 type Props = {
   userId: string
+  onClickEdit: () => void
 }
 
-export const User: FC<Props> = ({ userId }) => {
-  console.log('render User')
-
+export const User: FC<Props> = ({ userId, onClickEdit }) => {
   if (!userId) return <EmptyState>ユーザーを選択してください</EmptyState>
 
   return (
     <>
       <UserDetail />
-      <EditButton to={path.editUser(userId)}>編集</EditButton>
+      <EditButton onClick={onClickEdit}>編集</EditButton>
     </>
   )
 }
 
-const EditButton = styled(Link)`
+const EditButton = styled.button`
   display: block;
   width: 160px;
   margin: 20px auto 0;
@@ -32,13 +28,13 @@ const EditButton = styled(Link)`
   font-size: 18px;
   line-height: 50px;
   text-align: center;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.7;
   }
 `
 const EmptyState = styled.p`
-  height: 547px;
   font-size: 18px;
   text-align: center;
 `

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
 import { State } from '../modules/reducer'
 import { updateText } from '../modules/editUserForm'
@@ -9,9 +9,12 @@ import { NameYomiField as NameYomiFieldComponent } from '../components/parts/Nam
 export const NameYomiField = () => {
   const dispatch = useDispatch()
 
-  const { nameYomi } = useSelector((state: State) => ({
-    nameYomi: state.editUserForm.nameYomi,
-  }))
+  const { nameYomi } = useSelector(
+    (state: State) => ({
+      nameYomi: state.editUserForm.nameYomi,
+    }),
+    shallowEqual,
+  )
 
   const handleUpdateNameYomi = useCallback(
     (value: string) => {

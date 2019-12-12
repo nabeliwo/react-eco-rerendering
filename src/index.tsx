@@ -1,9 +1,8 @@
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
-import { ConnectedRouter } from 'connected-react-router'
 
-import { configureStore, history } from './redux/store/configureStore'
+import { configureStore } from './redux/store/configureStore'
 import { App } from './redux/components/App'
 
 const store = configureStore({})
@@ -11,9 +10,7 @@ const store = configureStore({})
 const render = (AppComponent: typeof App) => {
   ReactDOM.render(
     <Provider store={store}>
-      <ConnectedRouter history={history}>
-        <AppComponent />
-      </ConnectedRouter>
+      <AppComponent />
     </Provider>,
     document.getElementById('root'),
   )

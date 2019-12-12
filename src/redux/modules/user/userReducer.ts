@@ -1,5 +1,5 @@
 import { User, attributes, changeUsersOrder } from './userDomain'
-import { UserActionTypes, FETCH_USERS_DONE, FETCH_USER_DONE, UPDATE_CURRENT_USER, CHANGE_ORDER } from './userAction'
+import { UserActionTypes, FETCH_USERS_DONE, SET_CURRENT_USER, UPDATE_CURRENT_USER, CHANGE_ORDER } from './userAction'
 
 export type UserState = {
   list: {
@@ -29,11 +29,15 @@ export const userReducer = (state: UserState = initialState, action: UserActionT
         },
       }
 
-    case FETCH_USER_DONE:
+    case SET_CURRENT_USER: {
+      const { id } = action.payload
+      const user = state.list.items.find(item => item.id === id)!
+
       return {
         ...state,
-        current: action.payload.user,
+        current: user,
       }
+    }
 
     case UPDATE_CURRENT_USER: {
       const { id, userForm } = action.payload

@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
 import { State } from '../modules/reducer'
 import { toggleAttribute } from '../modules/editUserForm'
@@ -9,9 +9,12 @@ import { AttributesField as AttributesFieldComponent } from '../components/parts
 export const AttributesField = () => {
   const dispatch = useDispatch()
 
-  const { attributes } = useSelector((state: State) => ({
-    attributes: state.editUserForm.attributes,
-  }))
+  const { attributes } = useSelector(
+    (state: State) => ({
+      attributes: state.editUserForm.attributes,
+    }),
+    shallowEqual,
+  )
 
   const handleToggleAttribute = useCallback(
     (id: string, checked: boolean) => {

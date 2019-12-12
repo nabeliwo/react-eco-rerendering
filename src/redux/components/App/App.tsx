@@ -1,15 +1,11 @@
-import React, { FC } from 'react'
-import { Route, Switch } from 'react-router-dom'
+import React from 'react'
 import styled, { createGlobalStyle } from 'styled-components'
 import reset from 'styled-reset'
 
-import { routes } from '../../../routes'
-
 import { Header } from '../parts/Header'
+import { Users } from '../../containers/UsersContainer'
 
-export const App: FC<{}> = () => {
-  const { root } = routes
-
+export const App = () => {
   return (
     <>
       <GlobalStyle />
@@ -17,10 +13,7 @@ export const App: FC<{}> = () => {
       <Header />
 
       <Wrapper>
-        <Switch>
-          <Route path={root.path} component={root.component} />
-          <Route path="*" render={() => <p>404</p>} />
-        </Switch>
+        <Users />
       </Wrapper>
     </>
   )

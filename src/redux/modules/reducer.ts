@@ -1,20 +1,19 @@
-import { History } from 'history'
 import { combineReducers } from 'redux'
 
-import { RouterState, createRouterReducer } from './router'
 import { UserState, userReducer } from './user'
 import { EditUserFormState, editUserFormReducer } from './editUserForm'
+import { ViewState, viewReducer } from './view'
 
 export type State = {
-  router: RouterState
   user: UserState
   editUserForm: EditUserFormState
+  view: ViewState
 }
 
-export const createRootReducer = (history: History) => {
+export const createRootReducer = () => {
   return combineReducers({
-    router: createRouterReducer(history),
     user: userReducer,
     editUserForm: editUserFormReducer,
+    view: viewReducer,
   })
 }

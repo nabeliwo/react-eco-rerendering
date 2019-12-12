@@ -12,7 +12,6 @@ type Props = {
 export const UserList: FC<Props> = ({ users }) => {
   return (
     <Wrapper>
-      {console.log('render UserList')}
       {users.map(user => (
         <li key={user.id}>
           <UserListItem user={user} />

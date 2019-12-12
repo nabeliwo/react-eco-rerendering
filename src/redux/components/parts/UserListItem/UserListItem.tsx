@@ -1,29 +1,30 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
-
-import { path } from '../../../../constants/application'
 
 type Props = {
   id: string
   avatar: string
   name: string
   currentUserId: string
+  onClick: (id: string) => void
 }
 
-export const UserListItem: FC<Props> = ({ id, avatar, name, currentUserId }) => {
+export const UserListItem: FC<Props> = ({ id, avatar, name, currentUserId, onClick }) => {
   return (
-    <UserLink to={path.user(id)} className={id === currentUserId ? 'active' : ''}>
+    <UserButton className={id === currentUserId ? 'active' : ''} onClick={() => onClick(id)}>
       <Avatar src={avatar} width="30" height="30" alt={name} />
       <Name>{name}</Name>
-    </UserLink>
+    </UserButton>
   )
 }
 
-const UserLink = styled(Link)`
+const UserButton = styled.button`
   display: flex;
   align-items: center;
+  width: 100%;
   padding: 10px;
+  box-sizing: border-box;
+  cursor: pointer;
 
   &.active,
   &:hover {

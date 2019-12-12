@@ -1,21 +1,17 @@
 import React, { FC } from 'react'
-import { Route, Switch } from 'react-router-dom'
 import styled from 'styled-components'
-
-import { routes } from '../../../../routes'
 
 import { Select } from '../../../containers/SelectContainer'
 import { UserList } from '../../../containers/UserListContainer'
+import { User } from '../../../containers/UserContainer'
+import { EditUser } from '../../../containers/EditUserContainer'
 
 type Props = {
   hasUsers: boolean
+  viewMode: 'show' | 'edit'
 }
 
-export const Users: FC<Props> = ({ hasUsers }) => {
-  const { user, editUser } = routes.root.children
-
-  console.log('render Users')
-
+export const Users: FC<Props> = ({ hasUsers, viewMode }) => {
   return (
     <Main>
       <Sidebar>
@@ -32,13 +28,7 @@ export const Users: FC<Props> = ({ hasUsers }) => {
         )}
       </Sidebar>
 
-      <Body>
-        <Switch>
-          <Route exact path={user.path} component={user.component} />
-          <Route exact path={editUser.path} component={editUser.component} />
-          <Route path="*" render={() => <EmptyState>ユーザーを選択してください</EmptyState>} />
-        </Switch>
-      </Body>
+      <Body>{viewMode === 'show' ? <User /> : <EditUser />}</Body>
     </Main>
   )
 }
@@ -59,9 +49,4 @@ const Fetching = styled.p`
 const Body = styled.div`
   flex: 1;
   padding-left: 40px;
-`
-const EmptyState = styled.p`
-  height: 547px;
-  font-size: 18px;
-  text-align: center;
 `

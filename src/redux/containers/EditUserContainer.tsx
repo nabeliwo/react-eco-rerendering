@@ -1,37 +1,24 @@
-import React, { FC, useEffect, useCallback } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { match as Match } from 'react-router'
+import React, { useEffect } from 'react'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
 import { State } from '../modules/reducer'
-import { fetchUser } from '../modules/user'
-import { setUserForm, EditUserForm, submitEditUserForm } from '../modules/editUserForm'
+import { setUserForm } from '../modules/editUserForm'
 
 import { EditUser as EditUserComponent } from '../components/pages/EditUser'
 
-type Props = {
-  match: Match<{ userId: string }>
-}
-
-export const EditUser: FC<Props> = ({ match }) => {
+export const EditUser = () => {
   const dispatch = useDispatch()
-  const { userId } = match.params
 
-  const { currentUser, editUserForm } = useSelector((state: State) => ({
-    currentUser: state.user.current,
-    editUserForm: state.editUserForm,
-  }))
-
-  const handleSubmit = useCallback(
-    (userForm: EditUserForm) => {
-      dispatch(submitEditUserForm(userId, userForm))
-    },
-    [dispatch, userId],
+  const { currentUser } = useSelector(
+    (state: State) => ({
+      currentUser: state.user.current,
+    }),
+    shallowEqual,
   )
 
   useEffect(() => {
-    if (userId) dispatch(fetchUser(userId))
     if (currentUser) dispatch(setUserForm(currentUser))
-  }, [dispatch, currentUser, userId])
+  }, [dispatch, currentUser])
 
-  return <EditUserComponent hasUser={!!currentUser} editUserForm={editUserForm} onSubmit={handleSubmit} />
+  return <EditUserComponent hasUser={!!currentUser} />
 }

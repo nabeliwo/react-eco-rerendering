@@ -8,9 +8,10 @@ import { Users as UsersComponent } from '../components/pages/Users'
 
 export const Users = () => {
   const dispatch = useDispatch()
-  const { hasUsers } = useSelector(
+  const { hasUsers, viewMode } = useSelector(
     (state: State) => ({
       hasUsers: state.user.list.items.length > 0,
+      viewMode: state.view.mode,
     }),
     shallowEqual,
   )
@@ -19,5 +20,5 @@ export const Users = () => {
     dispatch(fetchUsers())
   }, [dispatch])
 
-  return <UsersComponent hasUsers={hasUsers} />
+  return <UsersComponent hasUsers={hasUsers} viewMode={viewMode} />
 }

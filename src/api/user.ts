@@ -166,11 +166,3 @@ const users: User[] = [
 ]
 
 export const getUsers = () => new Promise<User[]>(resolve => setTimeout(() => resolve(users), 2000))
-
-export const getUser = (id: string) =>
-  new Promise<User | null>(resolve =>
-    setTimeout(() => {
-      const user = users.find(item => item.id === id)
-      resolve(user || null)
-    }, 2000),
-  )

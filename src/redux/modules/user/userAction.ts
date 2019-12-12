@@ -3,8 +3,7 @@ import { User } from './userDomain'
 
 export const FETCH_USERS = 'FETCH_USERS'
 export const FETCH_USERS_DONE = 'FETCH_USERS_DONE'
-export const FETCH_USER = 'FETCH_USER'
-export const FETCH_USER_DONE = 'FETCH_USER_DONE'
+export const SET_CURRENT_USER = 'SET_CURRENT_USER'
 export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER'
 export const CHANGE_ORDER = 'CHANGE_ORDER'
 
@@ -17,16 +16,10 @@ export type FetchUsersDoneAction = {
     users: User[]
   }
 }
-export type FetchUserAction = {
-  type: typeof FETCH_USER
+export type SetCurrentUserAction = {
+  type: typeof SET_CURRENT_USER
   payload: {
     id: string
-  }
-}
-export type FetchUserDoneAction = {
-  type: typeof FETCH_USER_DONE
-  payload: {
-    user: User
   }
 }
 export type UpdateCurrentUserAction = {
@@ -54,16 +47,10 @@ export function fetchUsersDone(users: User[]): FetchUsersDoneAction {
     payload: { users },
   }
 }
-export function fetchUser(id: string): FetchUserAction {
+export function setCurrentUser(id: string): SetCurrentUserAction {
   return {
-    type: FETCH_USER,
+    type: SET_CURRENT_USER,
     payload: { id },
-  }
-}
-export function fetchUserDone(user: User): FetchUserDoneAction {
-  return {
-    type: FETCH_USER_DONE,
-    payload: { user },
   }
 }
 export function updateCurrentUser(id: string, userForm: EditUserForm): UpdateCurrentUserAction {
@@ -82,7 +69,6 @@ export function changeOrder(order: string): ChangeOrderAction {
 export type UserActionTypes =
   | FetchUsersAction
   | FetchUsersDoneAction
-  | FetchUserAction
-  | FetchUserDoneAction
+  | SetCurrentUserAction
   | UpdateCurrentUserAction
   | ChangeOrderAction

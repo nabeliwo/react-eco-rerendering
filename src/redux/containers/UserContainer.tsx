@@ -1,31 +1,23 @@
-import React, { FC, useEffect } from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { match as Match } from 'react-router'
+import React from 'react'
+import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
 import { State } from '../modules/reducer'
-import { fetchUser } from '../modules/user'
+import { changeViewMode } from '../modules/view'
 
 import { User as UserComponent } from '../components/pages/User'
 
-type Props = {
-  match: Match<{ userId: string }>
-}
-
-export const User: FC<Props> = ({ match }) => {
+export const User = () => {
   const dispatch = useDispatch()
-  const { userId } = match.params
+  const { currentUserId } = useSelector(
+    (state: State) => ({
+      currentUserId: state.user.current ? state.user.current.id : '',
+    }),
+    shallowEqual,
+  )
 
-  const { currentUserId } = useSelector((state: State) => ({
-    currentUserId: state.user.current ? state.user.current.id : '',
-  }))
+  const handleClickEdit = () => {
+    dispatch(changeViewMode('edit'))
+  }
 
-  useEffect(() => {
-    if (currentUserId) {
-      if (currentUserId !== userId) dispatch(fetchUser(userId))
-    } else {
-      dispatch(fetchUser(userId))
-    }
-  }, [currentUserId, dispatch, userId])
-
-  return <UserComponent userId={currentUserId} />
+  return <UserComponent userId={currentUserId} onClickEdit={handleClickEdit} />
 }

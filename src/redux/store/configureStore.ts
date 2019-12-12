@@ -1,13 +1,10 @@
-import { createBrowserHistory } from 'history'
 import { compose, applyMiddleware, createStore, Store } from 'redux'
 import createSagaMiddleware, { SagaMiddleware } from 'redux-saga'
-import { routerMiddleware } from 'connected-react-router'
 import logger from 'redux-logger'
 
 import { rootSaga } from '../modules/saga'
 import { createRootReducer } from '../modules/reducer'
 
-export const history = createBrowserHistory()
 const sagaMiddleware = createSagaMiddleware()
 
 const createEnhancer = () => {
@@ -15,13 +12,13 @@ const createEnhancer = () => {
     ? (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ serialize: true })
     : compose
 
-  return composeEnhancers(applyMiddleware(sagaMiddleware, routerMiddleware(history), logger))
+  return composeEnhancers(applyMiddleware(sagaMiddleware, logger))
 }
 
 export const configureStore = (preloadedState: object = {}) => {
   const store: Store & {
     runSaga: SagaMiddleware<typeof rootSaga>['run']
-  } = createStore(createRootReducer(history), preloadedState, createEnhancer())
+  } = createStore(createRootReducer(), preloadedState, createEnhancer())
 
   let sagaTask = sagaMiddleware.run(rootSaga)
 
@@ -31,7 +28,7 @@ export const configureStore = (preloadedState: object = {}) => {
       const {
         createRootReducer: createNextRootReducer,
       }: { createRootReducer: typeof createRootReducer } = require('../modules/reducer')
-      store.replaceReducer(createNextRootReducer(history))
+      store.replaceReducer(createNextRootReducer())
     })
 
     module.hot.accept('../modules/saga', () => {
