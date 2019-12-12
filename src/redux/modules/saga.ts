@@ -1,9 +1,7 @@
 import { all } from 'redux-saga/effects'
 
-// import { hogeProcess } from './hoge'
+import { userProcess } from './user'
 
 export function* rootSaga() {
-  yield all([
-    // hogeProcess(),
-  ])
+  yield all([userProcess()])
 }

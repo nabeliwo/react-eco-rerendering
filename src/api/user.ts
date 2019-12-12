@@ -3,7 +3,7 @@ import { User } from '../redux/modules/user'
 const users: User[] = [
   {
     id: 'user-1',
-    avatar: '/images/user_1.png',
+    avatar: '/assets/images/user_1.png',
     name: '手塚安則',
     nameYomi: 'テヅカヤスノリ',
     age: 10,
@@ -16,7 +16,7 @@ const users: User[] = [
   },
   {
     id: 'user-2',
-    avatar: '/images/user_2.png',
+    avatar: '/assets/images/user_2.png',
     name: '森川咲子',
     nameYomi: 'モリカワサキコ',
     age: 40,
@@ -33,7 +33,7 @@ const users: User[] = [
   },
   {
     id: 'user-3',
-    avatar: '/images/user_3.png',
+    avatar: '/assets/images/user_3.png',
     name: '岡崎護',
     nameYomi: 'オカザキマモル',
     age: 18,
@@ -50,7 +50,7 @@ const users: User[] = [
   },
   {
     id: 'user-4',
-    avatar: '/images/user_4.png',
+    avatar: '/assets/images/user_4.png',
     name: '前川真紀',
     nameYomi: 'マエカワマキ',
     age: 17,
@@ -60,14 +60,14 @@ const users: User[] = [
         name: 'でんき',
       },
       {
-        id: 'attribute-19',
+        id: 'attribute-18',
         name: 'フェアリー',
       },
     ],
   },
   {
     id: 'user-5',
-    avatar: '/images/user_5.png',
+    avatar: '/assets/images/user_5.png',
     name: '竹下章一',
     nameYomi: 'タケシタショウイチ',
     age: 63,
@@ -80,7 +80,7 @@ const users: User[] = [
   },
   {
     id: 'user-6',
-    avatar: '/images/user_6.png',
+    avatar: '/assets/images/user_6.png',
     name: '吉村陽子',
     nameYomi: 'ヨシムラヨウコ',
     age: 22,
@@ -97,7 +97,7 @@ const users: User[] = [
   },
   {
     id: 'user-7',
-    avatar: '/images/user_7.png',
+    avatar: '/assets/images/user_7.png',
     name: '茂木一馬',
     nameYomi: 'モギカズマ',
     age: 38,
@@ -107,14 +107,14 @@ const users: User[] = [
         name: 'かくとう',
       },
       {
-        id: 'attribute-18',
+        id: 'attribute-17',
         name: 'はがね',
       },
     ],
   },
   {
     id: 'user-8',
-    avatar: '/images/user_8.png',
+    avatar: '/assets/images/user_8.png',
     name: '神田優紀',
     nameYomi: 'カンダユキ',
     age: 5,
@@ -131,7 +131,7 @@ const users: User[] = [
   },
   {
     id: 'user-9',
-    avatar: '/images/user_9.png',
+    avatar: '/assets/images/user_9.png',
     name: '黒木正宣',
     nameYomi: 'クロキマサノリ',
     age: 23,
@@ -148,7 +148,7 @@ const users: User[] = [
   },
   {
     id: 'user-10',
-    avatar: '/images/user_10.png',
+    avatar: '/assets/images/user_10.png',
     name: '富永聡美',
     nameYomi: 'トミナガサトミ',
     age: 70,
@@ -158,7 +158,7 @@ const users: User[] = [
         name: 'ひこう',
       },
       {
-        id: 'attribute-17',
+        id: 'attribute-16',
         name: 'あく',
       },
     ],
@@ -166,3 +166,11 @@ const users: User[] = [
 ]
 
 export const getUsers = () => new Promise<User[]>(resolve => setTimeout(() => resolve(users), 2000))
+
+export const getUser = (id: string) =>
+  new Promise<User | null>(resolve =>
+    setTimeout(() => {
+      const user = users.find(item => item.id === id)
+      resolve(user || null)
+    }, 2000),
+  )

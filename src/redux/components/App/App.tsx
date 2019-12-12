@@ -5,7 +5,7 @@ import reset from 'styled-reset'
 
 import { routes } from '../../../routes'
 
-const { root, users } = routes
+const { root, users, user } = routes
 
 export const App: FC<{}> = () => {
   return (
@@ -15,6 +15,7 @@ export const App: FC<{}> = () => {
       <Switch>
         <Route exact path={root.path} component={root.component} />
         <Route exact path={users.path} component={users.component} />
+        <Route exact path={user.path} component={user.component} />
         <Route path="*" render={() => <p>404</p>} />
       </Switch>
     </>
@@ -28,6 +29,8 @@ const GlobalStyle = createGlobalStyle`
     font-size: 62.5%;
   }
   body {
+    min-height: 100vh;
+    background-color: #e5f0ff;
     word-wrap: break-word;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Helvetica Neue', 'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'ヒラギノ角ゴ ProN W3', Meiryo, 'メイリオ', sans-serif;
   }

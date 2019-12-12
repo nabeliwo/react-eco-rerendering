@@ -1,7 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useSelector, useDispatch, shallowEqual } from 'react-redux'
 
 import { State } from '../modules/reducer'
+import { fetchUsers } from '../modules/user'
 
 import { Users as UsersComponent } from '../components/pages/Users'
 
@@ -14,7 +15,9 @@ export const Users = () => {
     shallowEqual,
   )
 
-  console.log(dispatch, users)
+  useEffect(() => {
+    dispatch(fetchUsers())
+  }, [dispatch])
 
-  return <UsersComponent />
+  return <UsersComponent users={users} />
 }

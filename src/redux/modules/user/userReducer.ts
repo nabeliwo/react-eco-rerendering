@@ -1,5 +1,5 @@
 import { User } from './userDomain'
-import { UserActionTypes, FETCH_USERS_DONE } from './userAction'
+import { UserActionTypes, FETCH_USERS_DONE, FETCH_USER_DONE } from './userAction'
 
 export type UserState = {
   list: User[]
@@ -18,6 +18,12 @@ export const userReducer = (state: UserState = initialState, action: UserActionT
       return {
         ...state,
         list: action.payload.users,
+      }
+
+    case FETCH_USER_DONE:
+      return {
+        ...state,
+        current: action.payload.user,
       }
 
     default:

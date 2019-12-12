@@ -30,7 +30,7 @@ module.exports = {
     contentBase: resolve(__dirname, 'public'),
     port: devServer.port,
     hot: true,
-    // headers: { 'Access-Control-Allow-Origin': '*' },
+    headers: { 'Access-Control-Allow-Origin': '*' },
     historyApiFallback: {
       index: '/',
     },
