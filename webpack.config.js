@@ -2,7 +2,6 @@
 
 const { resolve } = require('path')
 const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
 const FriendlyErrorsWebpackPlugin = require('friendly-errors-webpack-plugin')
 
 const devServer = {
@@ -12,6 +11,7 @@ const devServer = {
 
 module.exports = {
   mode: 'development',
+  devtool: 'inline-source-map',
   context: resolve(__dirname, 'src'),
   entry: [
     `webpack-dev-server/client?${devServer.host}:${devServer.port}`,
@@ -23,15 +23,14 @@ module.exports = {
     path: resolve(__dirname, 'public'),
     publicPath: `${devServer.host}:${devServer.port}/`,
   },
-  devtool: 'inline-source-map',
   resolve: {
     extensions: ['.ts', '.tsx', '.js'],
   },
   devServer: {
-    contentBase: resolve(__dirname, 'src'),
+    contentBase: resolve(__dirname, 'public'),
     port: devServer.port,
     hot: true,
-    headers: { 'Access-Control-Allow-Origin': '*' },
+    // headers: { 'Access-Control-Allow-Origin': '*' },
     historyApiFallback: {
       index: '/',
     },
@@ -50,10 +49,6 @@ module.exports = {
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NamedModulesPlugin(),
-    new HtmlWebpackPlugin({
-      template: resolve(__dirname, 'public/index.html'),
-      favicon: resolve(__dirname, 'public/react.ico'),
-    }),
     new FriendlyErrorsWebpackPlugin(),
   ],
 }
