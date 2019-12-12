@@ -22,8 +22,13 @@ export const User: FC<Props> = ({ match }) => {
 
   useEffect(() => {
     dispatch(fetchUsers())
-    if (userId) dispatch(fetchUser(userId))
-  }, [dispatch, userId])
+
+    if (user) {
+      if (user.id !== userId) dispatch(fetchUser(userId))
+    } else {
+      dispatch(fetchUser(userId))
+    }
+  }, [dispatch, user, userId])
 
   return <UserComponent users={users} currentUser={user} />
 }

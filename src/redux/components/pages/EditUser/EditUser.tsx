@@ -1,20 +1,23 @@
 import React, { FC } from 'react'
 import styled from 'styled-components'
-import { Link } from 'react-router-dom'
 
-import { path } from '../../../../constants/application'
 import { User as UserType } from '../../../modules/user'
+import { EditUserForm } from '../../../modules/editUserForm'
 
 import { Header } from '../../parts/Header'
 import { UserList } from '../../parts/UserList'
-import { UserDetail } from '../../parts/UserDetail'
+import { UserForm } from '../../parts/UserForm'
 
 type Props = {
   users: UserType[]
   currentUser: UserType | null
+  editUserForm: EditUserForm
+  onChangeText: (key: 'name' | 'nameYomi' | 'age', value: string) => void
+  onToggleAttribute: (id: string, checked: boolean) => void
+  onSubmit: (userForm: EditUserForm) => void
 }
 
-export const User: FC<Props> = ({ users, currentUser }) => {
+export const EditUser: FC<Props> = ({ users, currentUser, editUserForm, onChangeText, onToggleAttribute, onSubmit }) => {
   return (
     <>
       <Header />
@@ -32,8 +35,14 @@ export const User: FC<Props> = ({ users, currentUser }) => {
           <Body>
             {currentUser ? (
               <>
-                <UserDetail user={currentUser} />
-                <EditButton to={path.editUser(currentUser.id)}>編集</EditButton>
+                <UserForm
+                  avatar={currentUser.avatar}
+                  name={currentUser.name}
+                  form={editUserForm}
+                  onChangeText={onChangeText}
+                  onToggleAttribute={onToggleAttribute}
+                />
+                <ChangeButton onClick={() => onSubmit(editUserForm)}>確定</ChangeButton>
               </>
             ) : (
               <EmptyState>ユーザーを選択してください</EmptyState>
@@ -64,7 +73,7 @@ const Body = styled.div`
   flex: 1;
   padding-left: 40px;
 `
-const EditButton = styled(Link)`
+const ChangeButton = styled.button`
   display: block;
   width: 160px;
   margin: 20px auto 0;
@@ -73,6 +82,7 @@ const EditButton = styled(Link)`
   font-size: 18px;
   line-height: 50px;
   text-align: center;
+  cursor: pointer;
 
   &:hover {
     opacity: 0.7;

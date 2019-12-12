@@ -1,5 +1,5 @@
-import { User } from './userDomain'
-import { UserActionTypes, FETCH_USERS_DONE, FETCH_USER_DONE } from './userAction'
+import { User, attributes } from './userDomain'
+import { UserActionTypes, FETCH_USERS_DONE, FETCH_USER_DONE, UPDATE_CURRENT_USER } from './userAction'
 
 export type UserState = {
   list: User[]
@@ -25,6 +25,32 @@ export const userReducer = (state: UserState = initialState, action: UserActionT
         ...state,
         current: action.payload.user,
       }
+
+    case UPDATE_CURRENT_USER: {
+      const { id, userForm } = action.payload
+      const newAttributes: Array<{ id: string; name: string }> = []
+
+      Array.from(userForm.attributes.keys()).forEach(attributeId => {
+        const attribute = attributes.find(item => item.id === attributeId)
+        if (attribute) newAttributes.push(attribute)
+      })
+
+      const newCurrentUser = {
+        ...state.current!,
+        name: userForm.name,
+        nameYomi: userForm.nameYomi,
+        age: parseInt(userForm.age, 10),
+        attributes: newAttributes,
+      }
+
+      return {
+        list: state.list.map(item => {
+          if (item.id === id) return newCurrentUser
+          return item
+        }),
+        current: newCurrentUser,
+      }
+    }
 
     default:
       return state

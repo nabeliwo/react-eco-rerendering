@@ -5,7 +5,7 @@ import reset from 'styled-reset'
 
 import { routes } from '../../../routes'
 
-const { root, users, user } = routes
+const { root, users, user, editUser } = routes
 
 export const App: FC<{}> = () => {
   return (
@@ -16,6 +16,7 @@ export const App: FC<{}> = () => {
         <Route exact path={root.path} component={root.component} />
         <Route exact path={users.path} component={users.component} />
         <Route exact path={user.path} component={user.component} />
+        <Route exact path={editUser.path} component={editUser.component} />
         <Route path="*" render={() => <p>404</p>} />
       </Switch>
     </>
