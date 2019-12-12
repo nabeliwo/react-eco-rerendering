@@ -8,16 +8,33 @@ import { UserList } from '../../parts/UserList'
 
 type Props = {
   users: User[]
+  order: string
+  onChangeOrder: (value: string) => void
 }
 
-export const Users: FC<Props> = ({ users }) => {
+export const Users: FC<Props> = ({ users, order, onChangeOrder }) => {
   return (
     <>
       <Header />
 
       <Wrapper>
         <Main>
-          <Sidebar>{users.length > 0 ? <UserList users={users} curerntUserId="" /> : <Fetching>取得中</Fetching>}</Sidebar>
+          <Sidebar>
+            {users.length > 0 ? (
+              <>
+                <Select value={order} onChange={e => onChangeOrder(e.currentTarget.value)}>
+                  <option value="name_asc">名前 昇順</option>
+                  <option value="name_desc">名前 降順</option>
+                  <option value="age_asc">年齢 昇順</option>
+                  <option value="age_desc">年齢 降順</option>
+                </Select>
+
+                <UserList users={users} curerntUserId="" />
+              </>
+            ) : (
+              <Fetching>取得中</Fetching>
+            )}
+          </Sidebar>
 
           <Body>
             <EmptyState>ユーザーを選択してください</EmptyState>
@@ -39,6 +56,10 @@ const Main = styled.div`
 `
 const Sidebar = styled.div`
   width: 200px;
+`
+const Select = styled.select`
+  width: 100%;
+  margin-bottom: 20px;
 `
 const Fetching = styled.p`
   font-size: 18px;

@@ -12,6 +12,32 @@ export type User = {
   attributes: UserAttribute[]
 }
 
+export const changeUsersOrder = (users: User[], order: string) => {
+  if (order === 'name_asc') {
+    return users.sort((a, b) => {
+      if (a.nameYomi < b.nameYomi) return -1
+      if (a.nameYomi > b.nameYomi) return 1
+      return 0
+    })
+  } else if (order === 'name_desc') {
+    return users.sort((a, b) => {
+      if (a.nameYomi < b.nameYomi) return 1
+      if (a.nameYomi > b.nameYomi) return -1
+      return 0
+    })
+  } else if (order === 'age_asc') {
+    return users.sort((a, b) => {
+      return a.age - b.age
+    })
+  } else if (order === 'age_desc') {
+    return users.sort((a, b) => {
+      return b.age - a.age
+    })
+  }
+
+  return users
+}
+
 export const attributes = [
   {
     id: 'attribute-1',

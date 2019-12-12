@@ -6,6 +6,7 @@ export const FETCH_USERS_DONE = 'FETCH_USERS_DONE'
 export const FETCH_USER = 'FETCH_USER'
 export const FETCH_USER_DONE = 'FETCH_USER_DONE'
 export const UPDATE_CURRENT_USER = 'UPDATE_CURRENT_USER'
+export const CHANGE_ORDER = 'CHANGE_ORDER'
 
 export type FetchUsersAction = {
   type: typeof FETCH_USERS
@@ -33,6 +34,12 @@ export type UpdateCurrentUserAction = {
   payload: {
     id: string
     userForm: EditUserForm
+  }
+}
+export type ChangeOrderAction = {
+  type: typeof CHANGE_ORDER
+  payload: {
+    order: string
   }
 }
 
@@ -65,6 +72,12 @@ export function updateCurrentUser(id: string, userForm: EditUserForm): UpdateCur
     payload: { id, userForm },
   }
 }
+export function changeOrder(order: string): ChangeOrderAction {
+  return {
+    type: CHANGE_ORDER,
+    payload: { order },
+  }
+}
 
 export type UserActionTypes =
   | FetchUsersAction
@@ -72,3 +85,4 @@ export type UserActionTypes =
   | FetchUserAction
   | FetchUserDoneAction
   | UpdateCurrentUserAction
+  | ChangeOrderAction

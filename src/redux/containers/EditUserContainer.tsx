@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { match as Match } from 'react-router'
 
 import { State } from '../modules/reducer'
-import { fetchUsers, fetchUser } from '../modules/user'
+import { fetchUsers, fetchUser, changeOrder } from '../modules/user'
 
 import { EditUser as EditUserComponent } from '../components/pages/EditUser'
 import { setUserForm, updateText, toggleAttribute, EditUserForm, submitEditUserForm } from '../modules/editUserForm'
@@ -16,12 +16,19 @@ export const EditUser: FC<Props> = ({ match }) => {
   const dispatch = useDispatch()
   const { userId } = match.params
 
-  const { users, user, editUserForm } = useSelector((state: State) => ({
-    users: state.user.list,
+  const { users, order, user, editUserForm } = useSelector((state: State) => ({
+    users: state.user.list.items,
+    order: state.user.list.order,
     user: state.user.current,
     editUserForm: state.editUserForm,
   }))
 
+  const handleChangeOrder = useCallback(
+    (value: string) => {
+      dispatch(changeOrder(value))
+    },
+    [dispatch],
+  )
   const handleUpdateText = useCallback(
     (key: 'name' | 'nameYomi' | 'age', value: string) => {
       dispatch(updateText(key, value))
@@ -50,8 +57,10 @@ export const EditUser: FC<Props> = ({ match }) => {
   return (
     <EditUserComponent
       users={users}
+      order={order}
       currentUser={user}
       editUserForm={editUserForm}
+      onChangeOrder={handleChangeOrder}
       onChangeText={handleUpdateText}
       onToggleAttribute={handleToggleAttribute}
       onSubmit={handleSubmit}

@@ -1,9 +1,9 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useCallback } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { match as Match } from 'react-router'
 
 import { State } from '../modules/reducer'
-import { fetchUsers, fetchUser } from '../modules/user'
+import { fetchUsers, fetchUser, changeOrder } from '../modules/user'
 
 import { User as UserComponent } from '../components/pages/User'
 
@@ -15,10 +15,18 @@ export const User: FC<Props> = ({ match }) => {
   const dispatch = useDispatch()
   const { userId } = match.params
 
-  const { users, user } = useSelector((state: State) => ({
-    users: state.user.list,
+  const { users, user, order } = useSelector((state: State) => ({
+    users: state.user.list.items,
+    order: state.user.list.order,
     user: state.user.current,
   }))
+
+  const handleChangeOrder = useCallback(
+    (value: string) => {
+      dispatch(changeOrder(value))
+    },
+    [dispatch],
+  )
 
   useEffect(() => {
     dispatch(fetchUsers())
@@ -30,5 +38,5 @@ export const User: FC<Props> = ({ match }) => {
     }
   }, [dispatch, user, userId])
 
-  return <UserComponent users={users} currentUser={user} />
+  return <UserComponent users={users} order={order} currentUser={user} onChangeOrder={handleChangeOrder} />
 }

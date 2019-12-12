@@ -10,14 +10,25 @@ import { UserForm } from '../../parts/UserForm'
 
 type Props = {
   users: UserType[]
+  order: string
   currentUser: UserType | null
   editUserForm: EditUserForm
+  onChangeOrder: (value: string) => void
   onChangeText: (key: 'name' | 'nameYomi' | 'age', value: string) => void
   onToggleAttribute: (id: string, checked: boolean) => void
   onSubmit: (userForm: EditUserForm) => void
 }
 
-export const EditUser: FC<Props> = ({ users, currentUser, editUserForm, onChangeText, onToggleAttribute, onSubmit }) => {
+export const EditUser: FC<Props> = ({
+  users,
+  order,
+  currentUser,
+  editUserForm,
+  onChangeOrder,
+  onChangeText,
+  onToggleAttribute,
+  onSubmit,
+}) => {
   return (
     <>
       <Header />
@@ -26,7 +37,16 @@ export const EditUser: FC<Props> = ({ users, currentUser, editUserForm, onChange
         <Main>
           <Sidebar>
             {users.length > 0 ? (
-              <UserList users={users} curerntUserId={currentUser ? currentUser.id : ''} />
+              <>
+                <Select value={order} onChange={e => onChangeOrder(e.currentTarget.value)}>
+                  <option value="name_asc">名前 昇順</option>
+                  <option value="name_desc">名前 降順</option>
+                  <option value="age_asc">年齢 昇順</option>
+                  <option value="age_desc">年齢 降順</option>
+                </Select>
+
+                <UserList users={users} curerntUserId={currentUser ? currentUser.id : ''} />
+              </>
             ) : (
               <Fetching>取得中</Fetching>
             )}
@@ -65,6 +85,10 @@ const Main = styled.div`
 `
 const Sidebar = styled.div`
   width: 200px;
+`
+const Select = styled.select`
+  width: 100%;
+  margin-bottom: 20px;
 `
 const Fetching = styled.p`
   font-size: 18px;

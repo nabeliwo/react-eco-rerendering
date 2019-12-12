@@ -1,13 +1,19 @@
-import { User, attributes } from './userDomain'
-import { UserActionTypes, FETCH_USERS_DONE, FETCH_USER_DONE, UPDATE_CURRENT_USER } from './userAction'
+import { User, attributes, changeUsersOrder } from './userDomain'
+import { UserActionTypes, FETCH_USERS_DONE, FETCH_USER_DONE, UPDATE_CURRENT_USER, CHANGE_ORDER } from './userAction'
 
 export type UserState = {
-  list: User[]
+  list: {
+    order: string
+    items: User[]
+  }
   current: User | null
 }
 
 const initialState: UserState = {
-  list: [],
+  list: {
+    order: 'name_asc',
+    items: [],
+  },
   current: null,
 }
 
@@ -17,7 +23,10 @@ export const userReducer = (state: UserState = initialState, action: UserActionT
     case FETCH_USERS_DONE:
       return {
         ...state,
-        list: action.payload.users,
+        list: {
+          ...state.list,
+          items: changeUsersOrder(action.payload.users, state.list.order),
+        },
       }
 
     case FETCH_USER_DONE:
@@ -44,13 +53,28 @@ export const userReducer = (state: UserState = initialState, action: UserActionT
       }
 
       return {
-        list: state.list.map(item => {
-          if (item.id === id) return newCurrentUser
-          return item
-        }),
+        list: {
+          ...state.list,
+          items: changeUsersOrder(
+            state.list.items.map(item => {
+              if (item.id === id) return newCurrentUser
+              return item
+            }),
+            state.list.order,
+          ),
+        },
         current: newCurrentUser,
       }
     }
+
+    case CHANGE_ORDER:
+      return {
+        ...state,
+        list: {
+          items: changeUsersOrder(state.list.items, action.payload.order),
+          order: action.payload.order,
+        },
+      }
 
     default:
       return state
